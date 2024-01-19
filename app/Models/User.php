@@ -31,6 +31,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -42,4 +44,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function book_loans(){
+        return $this->hasMany(BookLoan::class);
+    }
+
+    public function penalties(){
+        return $this->hasManyThrough(
+            Penalty::class, BookLoan::class,
+            'user_id', 'book_loan_id', 'id', 'id'
+        );
+    }
+
+    public function extensions() {
+        return $this->hasManyThrough(
+            Extension::class,
+            BookLoan::class,
+            'user_id', 'loan_id', 'id', 'id'
+        );
+    }
 }
