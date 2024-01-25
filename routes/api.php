@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
 
     Route::resource('/book/{book}/loan/{loan}/penalty', PenaltyController::class);
-    Route::resource('/book/{book}/loan', LoanController::class);
+    // Route::resource('/book/{book}/loan', LoanController::class);
     Route::resource('/book', BooksController::class);
     Route::post('/logout', [AuthController::class,'logout']);
 });
