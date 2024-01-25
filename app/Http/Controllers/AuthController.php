@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Traits\AuthorizationNames;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +15,7 @@ use App\Http\Requests\StoreUserRequest;
 
 class AuthController extends Controller
 {
-    use HttpResponses;
+    use HttpResponses, AuthorizationNames;
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
 
@@ -48,6 +49,8 @@ class AuthController extends Controller
             "password"=> Hash::make($request->password),
          ]);
          $user->save();
+
+         $user->assignRole($this->roleNames['student']);
 
          return $this->success([
             "user" => $user,
