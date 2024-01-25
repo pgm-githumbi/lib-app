@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\BookLoanFilter;
-use App\Http\Requests\StoreLoanRequest;
-use App\Models\BookLoan;
 use App\Traits\Tables;
+use App\Models\BookLoan;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
+use App\Filters\BookLoanFilter;
+use App\Traits\AuthorizationNames;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreLoanRequest;
 
 class BookLoanController extends Controller
 {
-    use HttpResponses, Tables;
+    use HttpResponses, Tables, AuthorizationNames;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $req, BookLoanFilter $filter)
     {
+        Gate::authorize($this->permNames['get-loans']);
         $filter_data = [$this->userId => $req->user()->id, ...$req->all()];
         $loans = BookLoan::query()->filter($filter, $filter_data)->get();
         return $this->success($loans, "Successfully retrieved loans");
@@ -36,6 +40,7 @@ class BookLoanController extends Controller
      */
     public function store(StoreLoanRequest $request)
     {
+        Gate::authorize($this->permNamesSpatie['post-loan'], BookLoan::class);
         $loan = new BookLoan();
         $loan->fill($request->all());
         $loan->save();
@@ -49,10 +54,7 @@ class BookLoanController extends Controller
     {
         $loan = BookLoan::query()->where("id", $id)->first();
         if(empty($loan)) abort(404, "Loan not found");
-        if($loan->user_id != $req->user()->id) {
-            $msg = "Not authorized to access this resource";
-            return $this->error(null, $msg, 401);
-        }
+        Gate::authorize($this->permNames['get-loan'], $loan);
         return $this->success($loan);
     }
 
@@ -67,9 +69,13 @@ class BookLoanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreLoanRequest $request, string $id)
+    public function update(StoreLoanRequest $req, string $id)
     {
-        //
+        $loan = BookLoan::findOrFail($id);
+        Gate::authorize($this->permNames['put-loan'], $loan);
+        $loan->fill($req->validated());
+        $loan->save();
+        return $this->success($loan, "Loan updated");
     }
 
     /**
@@ -77,12 +83,10 @@ class BookLoanController extends Controller
      */
     public function destroy(string $id, Request $req)
     {
-        $loan = BookLoan::find($id);
-        if(empty($loan)) abort(404, "Loan not found");
-
-        if($loan->user_id != $req->user()->id) abort(401, "Not authorized to delete this resource");
-
+        $loan = BookLoan::findOrFail($id);
+        Gate::authorize($this->permNames['remove-loan'], $loan);
         $loan->delete();
+
         return $this->success($loan,"Loan deleted successfully.");
     }
 }

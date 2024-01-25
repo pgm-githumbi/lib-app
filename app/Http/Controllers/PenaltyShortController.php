@@ -6,19 +6,24 @@ use App\Traits\Tables;
 use App\Models\Penalty;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
+use App\Filters\PenaltyFilter;
+use App\Traits\AuthorizationNames;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePenaltyRequest;
 
 class PenaltyShortController extends Controller
 {
-    use HttpResponses, Tables;
+    use HttpResponses, Tables, AuthorizationNames;
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $req)
+    public function index(Request $req, PenaltyFilter $filter)
     {
-        $perPage = $req->query('perPage', 10);
-        $pen = Penalty::paginate($perPage);
+        Gate::authorize($this->permNames['get-penalties'], Penalty::class);
+        $pen = Penalty::query();
+        $filter_data = [$this->penaltiesUser() => $req->user()->id,];
+        $pen->filter($filter, $filter_data)->get();
         return $this->success($pen, "Penalties retrieved successfully");
     }
 
@@ -39,6 +44,7 @@ class PenaltyShortController extends Controller
         $pen->fill($req->validated());
         $loan_col = $this->penaltiesLoan;
         $pen->{$loan_col} = $req->{$loan_col};
+        Gate::authorize($this->permNames['post-penalty'], $pen);
         $pen->save();
 
         return $this->success($pen, "successfully posted penalty");
@@ -50,6 +56,7 @@ class PenaltyShortController extends Controller
     public function show(string $id)
     {
         $pen = Penalty::findOrFail($id);
+        Gate::authorize($this->permNames['get-penalty'], $pen);
         return $this->success($pen, "successfully retrieved penalty");
     }
 
@@ -70,6 +77,7 @@ class PenaltyShortController extends Controller
         $pen->fill($req->validated());
         $loan_col = $this->penaltiesLoan;
         $pen->{$loan_col} = $req->{$loan_col};
+        Gate::authorize($this->permNames['put-penalty'], $pen);
         $pen->update();
         return $this->success($pen, "Penalty updated");
 
@@ -81,6 +89,7 @@ class PenaltyShortController extends Controller
     public function destroy(string $id)
     {
         $pen = Penalty::findOrFail($id);
+        Gate::authorize($this->permNames['remove-penalty'], $pen);
         $pen->delete();
         return $this->success($pen, "Penalty deleted");
     }

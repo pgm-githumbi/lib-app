@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\AuthorizationNames;
+use App\Traits\Tables;
 use App\Models\BookLoan;
 use App\Models\Extension;
-use App\Traits\Tables;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use App\Traits\ResourceValidator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\PostExtensionRequest;
 
 class ExtensionController extends Controller
 {
-    use ResourceValidator, HttpResponses, Tables;
+    use ResourceValidator, HttpResponses, Tables, AuthorizationNames;
     /**
      * Display a listing of the resource.
      */
     public function index(string $loan_id, Request $req)
     {
         $this->validateModelExists(BookLoan::class, $loan_id);
+        $loan = BookLoan::findOrFail($loan_id);
+        Gate::authorize($this->permNames['get-loan'], $loan);
         $ext = BookLoan::with('extensions')->find($loan_id)->extensions;
         return $this->success($ext, "Extensions retrieved");
         
@@ -39,6 +43,7 @@ class ExtensionController extends Controller
     public function store(PostExtensionRequest $request, string $loan_id)
     {
         $this->validateModelExists(BookLoan::class, $loan_id);
+        Gate::authorize($this->permNamesSpatie['post-loan'], BookLoan::class);
         $ext = new Extension();
         $ext->fill($request->all());
         $ext->book_loan_id = $loan_id;
@@ -53,6 +58,8 @@ class ExtensionController extends Controller
     {
         $this->validateModelExists(BookLoan::class, $loan_id);
         $this->validateModelExists(Extension::class, $id);
+        $loan = BookLoan::findOrFail($loan_id);
+        Gate::authorize($this->permNames['get-loan'], $loan);
         $ext = Extension::find($id);
         return $this->success($ext, "Resource retrieved successfully");
     }
@@ -73,6 +80,8 @@ class ExtensionController extends Controller
         $this->validateModelExistsWith(Extension::class, $ext_id, 
                 $this->extensionsLoan, $loan_id);
 
+        $loan = BookLoan::findOrFail($loan_id);
+        Gate::authorize($this->permNames['put-loan'], $loan);
         $ext = Extension::find($ext_id);
         if($req->filled($this->extensionsLoan)){
             if($ext->{$this->extensionsLoan} != $req->input($this->extensionsLoan)){
@@ -93,6 +102,8 @@ class ExtensionController extends Controller
         $this->validateModelExistsWith(Extension::class, $ext_id, 
                 $this->extensionsLoan, $loan_id);
 
+        $loan = BookLoan::findOrFail($loan_id);
+        Gate::authorize($this->permNames['remove-loan'], $loan);
         $ext = Extension::find($ext_id);
         $ext->delete();
         return $this->success($ext, "Extension deleted successfully");

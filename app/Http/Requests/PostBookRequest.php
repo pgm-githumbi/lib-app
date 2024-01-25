@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\AuthorizationNames;
 use App\Traits\Tables;
 use Elegant\Sanitizer\Laravel\SanitizesInput;
 use Illuminate\Foundation\Http\FormRequest;
@@ -11,14 +12,15 @@ use Elegant\Sanitizer\Filters\Enum;
 
 class PostBookRequest extends FormRequest
 {
-    use Tables, SanitizesInput;
+    use Tables, SanitizesInput, AuthorizationNames;
 
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can($this->permNamesSpatie['create-book']);
+        
     }
 
     /**

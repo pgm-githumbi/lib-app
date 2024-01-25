@@ -2,26 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\AuthorizationNames;
+use Exception;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\BookLoan;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
 use App\Http\Requests\PostBookRequest;
-use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller{
-    use HttpResponses;
+    use HttpResponses, AuthorizationNames;
     
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->authorize($this->permNamesSpatie['view-books']);
+
         $page = $request->query('page', 1);
         $perPage = $request->query('perPage', 10);
         $count = $request->query('count');
@@ -63,14 +69,16 @@ class BooksController extends Controller{
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $req, string $id)
     {
+        
         if(!Book::where('id', $id)->exists()){
             return $this->error('Book Not Found', null, 404);
         }
         
         $book = Book::find($id);
         
+        //$this->authorize($this->permissionNames['create-book'], $book);
         
         return $this->success($book);
     }
