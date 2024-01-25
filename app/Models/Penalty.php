@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Hashemi\QueryFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Penalty extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = ['penalty_amount_ksh', 'penalty_amount_paid_ksh'];
     protected $casts = ['created_at' => 'datetime',

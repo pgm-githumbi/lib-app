@@ -33,6 +33,7 @@ Trait Tables{
     public $extensionsLoan = 'book_loan_id';
     public $extensionsReturnDate = 'expected_return_date';
     public $extensionsPenalty = 'penalty_id';
+    public $extensionsUser = 'book_loan.user';
 
     public $bookCategory = 'category_id';
     public $categoryId = 'id';
@@ -48,4 +49,6 @@ Trait Tables{
     public function bookLoansTable() { return "book_loans";}
     public function extensionsTable() { return "extensions";}
     public function penaltiesTable() { return "penalties";}
+
+    public function penaltiesUser() { return $this->penaltiesLoan.'.'.$this->loanUser;}
 }
