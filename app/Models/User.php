@@ -3,14 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\AuthorizationNames;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, 
+        HasRoles, AuthorizationNames;
 
     /**
      * The attributes that are mass assignable.
@@ -62,5 +65,17 @@ class User extends Authenticatable
             BookLoan::class,
             'user_id', 'loan_id', 'id', 'id'
         );
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        
+        static::created(function ($user) {
+            // Assign the default role to the user when created
+            $user->assignRole('student');
+            
+        });
     }
 }
