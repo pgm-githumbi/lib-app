@@ -32,7 +32,7 @@ class StoreLoanRequest extends FormRequest
             'book_id'=> 'required|integer|'.$books_rule,
             'loan_status' => 'nullable|in:'.$status_list,
             'loan_date' => 'nullable|date|after:1970-01-01',
-            'due_date' => 'nullable|date|after:1970-01-01',
+            'due_date' => 'required|date|after:1970-01-01',
             'added_by' => 'required|integer|'.$users_rule,
         ];
     }
