@@ -17,6 +17,7 @@ use App\Http\Requests\PostBookRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BooksController extends Controller{
     use HttpResponses, AuthorizationNames;
@@ -26,7 +27,7 @@ class BooksController extends Controller{
      */
     public function index(Request $request)
     {
-        $this->authorize($this->permNamesSpatie['view-books']);
+        // Gate::authorize($this->permNames['get-books']);
 
         $page = $request->query('page', 1);
         $perPage = $request->query('perPage', 10);
@@ -57,6 +58,7 @@ class BooksController extends Controller{
      */
     public function store(PostBookRequest $request)
     {
+        Gate::authorize($this->permNames['post-book']);
         $request->validated($request->all());
 
         $book = new Book();

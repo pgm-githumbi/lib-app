@@ -16,7 +16,7 @@ class BookPolicy
     public function viewAny(User $user): bool
     {
         //return $user->can($this->permissionNames['view-book']);
-        return false;
+        return true;
     }
 
     /**
@@ -32,7 +32,7 @@ class BookPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->hasRole($this->roleNames['admin']);
         //
     }
     

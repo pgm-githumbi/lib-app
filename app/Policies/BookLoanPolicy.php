@@ -22,7 +22,7 @@ class BookLoanPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can($this->permNamesSpatie['view-loans']);
+        return true;
     }
     
     /**
@@ -39,7 +39,7 @@ class BookLoanPolicy
     public function create(User $user): bool
     {
         // return $user->can($this->permNamesSpatie['create-loan']);
-        return false;
+        return true;
     }
     
     /**
