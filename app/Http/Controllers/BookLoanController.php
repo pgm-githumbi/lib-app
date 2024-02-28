@@ -40,7 +40,7 @@ class BookLoanController extends Controller
      */
     public function store(StoreLoanRequest $request)
     {
-        Gate::authorize($this->permNamesSpatie['post-loan'], BookLoan::class);
+        Gate::authorize($this->permNames['post-loan'], BookLoan::class);
         $loan = new BookLoan();
         $loan->fill($request->all());
         $loan->save();
