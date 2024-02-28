@@ -8,6 +8,7 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Penalty;
 use App\Models\BookLoan;
+use App\Models\Borrow;
 use App\Models\Category;
 use App\Models\Extension;
 use Illuminate\Database\Seeder;
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         BookLoan::factory(40)->create();
         Penalty::factory(40)->create();
         Extension::factory(30)->create();
+        Borrow::factory(30)->create();
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',

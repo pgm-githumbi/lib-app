@@ -14,6 +14,7 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\BooksController;
 use App\Http\Controllers\PenaltyController;
 use App\Http\Controllers\BookLoanController;
+use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\PenaltyShortController;
@@ -57,6 +58,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::resource('/book/{book}/loan/{loan}/penalty', PenaltyController::class);
     // Route::resource('/book/{book}/loan', LoanController::class);
+    Route::resource('/borrow', BorrowController::class);
     Route::resource('/book', BooksController::class);
     Route::post('/logout', [AuthController::class,'logout']);
 });

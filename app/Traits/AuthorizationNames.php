@@ -23,7 +23,19 @@ Trait AuthorizationNames{
                 'delete-category' => 'delete-category',
             ];
 
-    protected $permNames = ['get-loans' => 'get-loans',
+    protected $permNames = ['get-books' => 'get-books',
+                            'get-book' => 'get-book',
+                            'put-book' => 'put-book',
+                            'post-book' => 'post-book',
+                            'delete-book' => 'delete-book',
+
+                            'get-borrows' => 'get-borrows',
+                            'get-borrow' => 'get-borrow',
+                            'post-borrow' => 'post-borrow',
+                            'put-borrow' => 'put-borrow',
+                            'delete-borrow' => 'delete-borrow',
+        
+                            'get-loans' => 'get-loans',
                             'get-loan' => 'get-loan',
                             'put-loan' => 'put-loan',
                             'post-loan' => 'post-loan',

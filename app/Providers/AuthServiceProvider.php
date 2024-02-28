@@ -8,6 +8,7 @@ use App\Models\BookLoan;
 use App\Policies\BookPolicy;
 use App\Policies\PenaltyPolicy;
 use App\Policies\BookLoanPolicy;
+use App\Policies\BorrowPolicy;
 use App\Policies\CategoryPolicy;
 use App\Traits\AuthorizationNames;
 use Illuminate\Support\Facades\Gate;
@@ -36,6 +37,18 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define($this->permNames['get-loans'], [BookLoanPolicy::class, 'viewAny']);
         Gate::define($this->permNames['put-loan'], [BookLoanPolicy::class, 'update']);
         Gate::define($this->permNames['get-loan'], [BookLoanPolicy::class, 'view']);
+        Gate::define($this->permNames['post-loan'], [BookLoanPolicy::class, 'create']);
+    
+    
+    
+        Gate::define($this->permNames['get-borrows'], [BorrowPolicy::class, 'viewAny']);
+        Gate::define($this->permNames['get-borrow'], [BorrowPolicy::class, 'view']);
+        Gate::define($this->permNames['post-borrow'], [BorrowPolicy::class, 'create']);
+        Gate::define($this->permNames['put-borrow'], [BorrowPolicy::class, 'update']);
+        Gate::define($this->permNames['delete-borrow'], [BorrowPolicy::class, 'delete']);
+
+
+    
 
         Gate::define($this->permNames['post-category'], [CategoryPolicy::class, 'create']);
         Gate::define($this->permNames['remove-category'], [CategoryPolicy::class, 'delete']);

@@ -10,7 +10,7 @@ Trait Tables{
 
 
     public $users = 'users';
-    public $userId = 'userId';
+    public $userId = 'id';
 
 
     public $loanId = "id";
@@ -20,6 +20,11 @@ Trait Tables{
     public $loanDate = "loan_date";
     public $loanDueDate = "due_date";
     public $loanReturnDate = "return_date";
+
+    public $borrowId = "id";
+    public $borrowBook = "book_id";
+    public $borrowUser = "user_id";
+    public $borrowTable = "borrows";
 
 
 
