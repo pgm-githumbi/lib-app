@@ -13,7 +13,7 @@ use App\Traits\HttpResponses;
 use App\Traits\Tables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class BorrowController extends Controller
 {
@@ -21,12 +21,16 @@ class BorrowController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $req, BorrowFilter $filter)
+    public function index(Request $request, BorrowFilter $filter)
     {
         
-        Gate::authorize($this->permNames['get-borrows']);
-        $user = Auth()->user();
-        $borrows = Borrow::query()->where('user_id', $user->id)->filter($filter)->get();
+        $this->authorize('viewAny', Borrow::class);
+        $perPage = $request->query('per_page', 10);
+        if ($request->user()->can('viewEvery', Borrow::class)){
+            $borrowEvery = Borrow::query()->filter($filter)->paginate($perPage);
+            return $this->success($borrowEvery);
+        }
+        $borrows = Borrow::query()->where('user_id', $request->user()->id)->filter($filter)->paginate($perPage);
         return $this->success($borrows);
     }
 
@@ -57,8 +61,8 @@ class BorrowController extends Controller
                 return $this->error([], "Duplicate borrow request. Wait for the first one to be approved.", 422);
 
         $borrow = new Borrow();
-        $borrow->user_id = $request->get($this->borrowUser);
-        $borrow->book_id = $request->get($this->borrowBook);
+        $borrow->user_id = (int)$request->get($this->borrowUser);
+        $borrow->book_id = (int)$request->get($this->borrowBook);
         $borrow->save();
         return $this->success(['borrow' => $borrow]);
 
@@ -110,7 +114,8 @@ class BorrowController extends Controller
      */
     public function destroy(Borrow $borrow)
     {
-        Gate::authorize($this->permNames['delete-borrow'], $borrow);
+        // Gate::authorize($this->permNames['delete-borrow'], $borrow);
+        $this->authorize('delete', $borrow);
         $borrow->delete();
         return $this->success(["borrow" => $borrow], "Borrow deleted successfully.");
     }

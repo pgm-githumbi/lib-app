@@ -28,4 +28,11 @@ class StoreBorrowRequest extends FormRequest
             "book_id" => ["required", "integer", "exists:".$this->booksTable().','.$this->bookId],
         ];
     }
+
+    public function filter(){
+        return [
+            "user_id" => ["trim|strip_tags|cast:int"],
+            "book_id" => ["trim|strip_tags|cast:int"],
+        ];
+    }
 }
