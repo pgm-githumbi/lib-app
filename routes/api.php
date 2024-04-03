@@ -18,6 +18,7 @@ use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\PenaltyShortController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +31,10 @@ use App\Http\Controllers\PenaltyShortController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/current_user', function (Request $request) {
     return $request->user();
 });
+
 
 
 //Public routes
@@ -44,7 +46,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     
     
-    
+    Route::resource('/user', UserController::class);
     
     Route::resource('/category', CategoryController::class);
     

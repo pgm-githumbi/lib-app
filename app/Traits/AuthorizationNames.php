@@ -67,5 +67,6 @@ Trait AuthorizationNames{
 
     }
     protected $roleNames = ['admin' => 'super-admin', 
-                            'student' => 'student'];
+                            'student' => 'student', 
+                            'staff' => 'staff'];
 }
