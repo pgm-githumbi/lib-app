@@ -24,6 +24,11 @@ class BorrowPolicy
         
         return true;
     }
+    
+    public function viewEvery(User $user): bool
+    {
+        return $user->hasRole($this->roleNames['staff']);
+    }
 
     /**
      * Determine whether the user can view the model.
@@ -54,7 +59,8 @@ class BorrowPolicy
      */
     public function delete(User $user, Borrow $borrow): bool
     {
-        return $borrow->user->id == $user->id;
+        $is_staff_admin = $user->hasRole($this->roleNames['staff']) || $user->hasRole($this->roleNames['admin']);
+        return $borrow->user->id == $user->id || $is_staff_admin;
     }
 
     /**
