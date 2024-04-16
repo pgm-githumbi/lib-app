@@ -29,12 +29,12 @@ class AppServiceProvider extends ServiceProvider
             
         // }
 
-        // foreach($this->roleNames as $role => $r){
-        //     Role::findOrCreate($r);
-        // }
+        foreach($this->roleNames as $role => $r){
+            Role::findOrCreate($r);
+        }
 
-        // $student = Role::findByName($this->roleNames['student']);
-        // $student->givePermissionTo($this->getPermissionsStudent());
+        $student = Role::findByName($this->roleNames['student']);
+        $student->givePermissionTo($this->getPermissionsStudent());
         
     }
 }

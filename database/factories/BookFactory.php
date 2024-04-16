@@ -21,11 +21,11 @@ class BookFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'publisher' => $this->faker->unique()->sentence(1),
-            'isbn' => $this->faker->unique()->sentence(1),
-            'description' => $this->faker->unique()->sentence(1),
+            'publisher' => $this->faker->unique()->name(),
+            'isbn' => $this->faker->isbn13(),
+            'description' => $this->faker->unique()->sentence(6),
             'pages' => $this->faker->unique()->numberBetween(1,100),
-            'image' => $this->faker->unique()->sentence(1),
+            'image' => $this->faker->unique()->imageUrl(640, 480),
             $this->bookAvailable => $this->faker->numberBetween(1,100),
             $this->bookCategory => Category::inRandomOrder()->first(),
         ];

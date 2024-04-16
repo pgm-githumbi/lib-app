@@ -10,6 +10,7 @@ use App\Filters\BookLoanFilter;
 use App\Traits\AuthorizationNames;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreLoanRequest;
 
@@ -22,8 +23,7 @@ class BookLoanController extends Controller
     public function index(Request $req, BookLoanFilter $filter)
     {
         Gate::authorize($this->permNames['get-loans']);
-        $filter_data = [$this->userId => $req->user()->id, ...$req->all()];
-        $loans = BookLoan::query()->filter($filter, $filter_data)->get();
+        $loans = BookLoan::query()->where($this->loanUser, Auth::user()->id)->filter($filter)->get();
         return $this->success($loans, "Successfully retrieved loans");
     }
 
@@ -40,7 +40,8 @@ class BookLoanController extends Controller
      */
     public function store(StoreLoanRequest $request)
     {
-        Gate::authorize($this->permNames['post-loan'], BookLoan::class);
+        // Gate::authorize($this->permNames['post-loan'], BookLoan::class);
+        $this->authorize('create', BookLoan::class);
         $loan = new BookLoan();
         $loan->fill($request->all());
         $loan->save();

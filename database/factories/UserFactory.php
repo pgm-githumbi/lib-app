@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Traits\AuthorizationNames;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -11,6 +13,7 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    use AuthorizationNames;
     /**
      * The current password being used by the factory.
      */
@@ -41,4 +44,24 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+    
+    public function staff(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'staff_'.fake()->name(),
+            ])->afterCreating(function (User $user){
+                $user->assignRole($this->roleNames['staff']);
+            });
+    }
+
+    
+        public function admin(): static
+        {
+            return $this->state(fn (array $attributes) => [
+                'name' => 'admin_'.fake()->name(),
+                'password' => Hash::make('admin_password')
+        ])->afterCreating(function (User $user){
+            $user->assignRole($this->roleNames['admin']);
+        });
+        }
 }
