@@ -29,15 +29,17 @@ class DatabaseSeeder extends Seeder
         $staff = Role::findOrCreate($this->roleNames['staff']);
         $admin = Role::findOrCreate($this->roleNames['admin']);
         $student = Role::findOrCreate($this->roleNames['student']);
-        User::factory(13)->create();
-        User::factory(5)->staff()->create();
-        User::factory(5)->admin()->create();
-        Category::factory(20)->create();
+        User::factory(8)->create();
+        User::factory(2)->staff()->create();
+        User::factory(1)->knownStaff()->create();
+        User::factory(1)->knownAdmin()->create();
+        User::factory(2)->admin()->create();
+        Category::factory(8)->create();
         Book::factory(17)->create();
-        BookLoan::factory(28)->create();
-        Penalty::factory(20)->create();
+        BookLoan::factory(1)->create();
+        Penalty::factory(5)->create();
         Extension::factory(10)->create();
-        Borrow::factory(20)->create();
+        Borrow::factory(2)->create();
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
