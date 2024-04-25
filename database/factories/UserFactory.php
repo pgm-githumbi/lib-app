@@ -54,14 +54,33 @@ class UserFactory extends Factory
             });
     }
 
-    
-        public function admin(): static
-        {
-            return $this->state(fn (array $attributes) => [
-                'name' => 'admin_'.fake()->name(),
-                'password' => Hash::make('admin_password')
-        ])->afterCreating(function (User $user){
+    public function knownStaff(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'MainStaffExample',
+            'email' => 'MainStaffExample@example.com',
+        ])->afterCreating(function (User $user)  {
+            $user->assignRole($this->roleNames['staff']);
+        });
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'admin_'.fake()->name(),
+            'password' => Hash::make('admin_password')
+    ])->afterCreating(function (User $user){
+        $user->assignRole($this->roleNames['admin']);
+    });
+    }
+
+    public function knownAdmin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'MainAdminExample',
+            'email' => 'MainAdminExample@example.com',
+        ])->afterCreating(function (User $user) {
             $user->assignRole($this->roleNames['admin']);
         });
-        }
+    }
 }
