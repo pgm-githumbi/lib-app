@@ -33,8 +33,9 @@ class AppServiceProvider extends ServiceProvider
             Role::findOrCreate($r);
         }
 
-        $student = Role::findByName($this->roleNames['student']);
-        $student->givePermissionTo($this->getPermissionsStudent());
+        // $student = Role::findByName($this->roleNames['student']);
+        
+        // $student->givePermissionTo($this->getPermissionsStudent());
         
     }
 }

@@ -75,7 +75,7 @@ class User extends Authenticatable
         
         static::created(function ($user) {
             // Assign the default role to the user when created
-            $user->assignRole('student');
+           
             
         });
     }
