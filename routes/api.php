@@ -36,6 +36,12 @@ Route::middleware('auth:sanctum')->get('/current_user', function (Request $reque
 });
 
 
+Route::middleware('auth:sanctum')->get('/current_user/roles', function (Request $request) {
+    return $request->user()->getRoleNames();
+});
+
+
+
 
 //Public routes
 Route::post('/register', [AuthController::class,'register']);
