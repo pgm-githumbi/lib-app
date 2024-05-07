@@ -33,35 +33,35 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         
-        Gate::define('publish-loan', [BookLoanPolicy::class, 'create']);
-        Gate::define($this->permNames['get-loans'], [BookLoanPolicy::class, 'viewAny']);
-        Gate::define($this->permNames['put-loan'], [BookLoanPolicy::class, 'update']);
-        Gate::define($this->permNames['get-loan'], [BookLoanPolicy::class, 'view']);
-        Gate::define($this->permNames['post-loan'], [BookLoanPolicy::class, 'create']);
+        // Gate::define('publish-loan', [BookLoanPolicy::class, 'create']);
+        // Gate::define($this->permNames['get-loans'], [BookLoanPolicy::class, 'viewAny']);
+        // Gate::define($this->permNames['put-loan'], [BookLoanPolicy::class, 'update']);
+        // Gate::define($this->permNames['get-loan'], [BookLoanPolicy::class, 'view']);
+        // Gate::define($this->permNames['post-loan'], [BookLoanPolicy::class, 'create']);
     
     
     
-        Gate::define($this->permNames['get-borrows'], [BorrowPolicy::class, 'viewAny']);
-        Gate::define($this->permNames['get-borrow'], [BorrowPolicy::class, 'view']);
-        Gate::define($this->permNames['post-borrow'], [BorrowPolicy::class, 'create']);
-        Gate::define($this->permNames['put-borrow'], [BorrowPolicy::class, 'update']);
-        Gate::define($this->permNames['delete-borrow'], [BorrowPolicy::class, 'delete']);
+        // Gate::define($this->permNames['get-borrows'], [BorrowPolicy::class, 'viewAny']);
+        // Gate::define($this->permNames['get-borrow'], [BorrowPolicy::class, 'view']);
+        // Gate::define($this->permNames['post-borrow'], [BorrowPolicy::class, 'create']);
+        // Gate::define($this->permNames['put-borrow'], [BorrowPolicy::class, 'update']);
+        // Gate::define($this->permNames['delete-borrow'], [BorrowPolicy::class, 'delete']);
 
 
     
 
-        Gate::define($this->permNames['post-category'], [CategoryPolicy::class, 'create']);
-        Gate::define($this->permNames['remove-category'], [CategoryPolicy::class, 'delete']);
-        Gate::define($this->permNames['remove-category'], [CategoryPolicy::class, 'forceDelete']);
-        Gate::define($this->permNames['put-category'], [CategoryPolicy::class, 'update']);
+        // Gate::define($this->permNames['post-category'], [CategoryPolicy::class, 'create']);
+        // Gate::define($this->permNames['remove-category'], [CategoryPolicy::class, 'delete']);
+        // Gate::define($this->permNames['remove-category'], [CategoryPolicy::class, 'forceDelete']);
+        // Gate::define($this->permNames['put-category'], [CategoryPolicy::class, 'update']);
         
         
-        Gate::define($this->permNames['get-penalties'], [PenaltyPolicy::class, 'viewAny']);
-        Gate::define($this->permNames['get-penalty'], [PenaltyPolicy::class, 'view']);
-        Gate::define($this->permNames['post-penalty'], [PenaltyPolicy::class, 'create']);
-        Gate::define($this->permNames['put-penalty'], [PenaltyPolicy::class, 'update']);
-        Gate::define($this->permNames['remove-penalty'], [PenaltyPolicy::class, 'delete']);
-        Gate::define($this->permNames['remove-penalty'], [PenaltyPolicy::class, 'forceDelete']);
+        // Gate::define($this->permNames['get-penalties'], [PenaltyPolicy::class, 'viewAny']);
+        // Gate::define($this->permNames['get-penalty'], [PenaltyPolicy::class, 'view']);
+        // Gate::define($this->permNames['post-penalty'], [PenaltyPolicy::class, 'create']);
+        // Gate::define($this->permNames['put-penalty'], [PenaltyPolicy::class, 'update']);
+        // Gate::define($this->permNames['remove-penalty'], [PenaltyPolicy::class, 'delete']);
+        // Gate::define($this->permNames['remove-penalty'], [PenaltyPolicy::class, 'forceDelete']);
         
         
         

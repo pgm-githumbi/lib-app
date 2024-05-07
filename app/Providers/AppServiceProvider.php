@@ -29,9 +29,7 @@ class AppServiceProvider extends ServiceProvider
             
         // }
 
-        foreach($this->roleNames as $role => $r){
-            Role::findOrCreate($r);
-        }
+        
 
         // $student = Role::findByName($this->roleNames['student']);
         

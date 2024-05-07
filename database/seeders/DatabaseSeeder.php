@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
         $staff = Role::findOrCreate($this->roleNames['staff']);
         $admin = Role::findOrCreate($this->roleNames['admin']);
         $student = Role::findOrCreate($this->roleNames['student']);
+        foreach($this->roleNames as $role => $r){
+            Role::findOrCreate($r);
+        }
         User::factory(8)->create();
         User::factory(2)->staff()->create();
         User::factory(1)->knownStaff()->create();
