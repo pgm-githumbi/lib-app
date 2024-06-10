@@ -55,7 +55,8 @@ class BookLoanController extends Controller
     {
         $loan = BookLoan::query()->where("id", $id)->first();
         if(empty($loan)) abort(404, "Loan not found");
-        Gate::authorize($this->permNames['get-loan'], $loan);
+        $this->authorize('view', $loan);
+        // Gate::authorize($this->permNames['get-loan'], $loan);
         return $this->success($loan);
     }
 
